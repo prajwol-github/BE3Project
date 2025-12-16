@@ -1,0 +1,6 @@
+TASKS
+
+Week 1 --> Idea Presentation
+Week 2 --> Introduction and Objective
+Week 3 --> Algorithm and Flowchart
+Week 4 --> Literature Review and Basic Introduction and Login System
