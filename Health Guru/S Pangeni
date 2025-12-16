@@ -1,0 +1,197 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+using namespace std;
+struct User {
+    string username, password;
+    int age;
+    char gender;
+    double height, weight;
+    double biceps;
+    double targetWeight;
+    double targetBiceps;
+    int activityLevel;
+    int workoutLevel; // 1-Beginner, 2-Intermediate, 3-Advanced
+    string goal;
+};
+
+const string USERS_FILE = "users.txt";
+const string LOGS_FILE_PREFIX = "logs_";
+
+// ---------------- UI HELPERS ----------------
+void line() {
+    cout << "===========================================\n";
+}
+
+void showDisclaimer() {
+    line();
+    cout << "              HEALTH GURU SYSTEM\n";
+    line();
+    cout << "Disclaimer: This software provides general\n";
+    cout << "health guidance only. Not medical advice.\n";
+    line();
+}
+
+// ---------------- FILE HANDLING ----------------
+void saveUser(const User &u) {
+    ofstream fout(USERS_FILE.c_str(), ios::app);
+    fout << u.username << ' ' << u.password << ' ' << u.age << ' '
+         << u.gender << ' ' << u.height << ' ' << u.weight << ' '
+         << u.biceps << ' ' << u.targetWeight << ' ' << u.targetBiceps << ' '
+         << u.activityLevel << ' ' << u.workoutLevel << ' ' << u.goal << '\n';
+    fout.close();
+}
+
+bool loadUser(User &user, const string &uname, const string &pwd) {
+    ifstream fin(USERS_FILE.c_str());
+    User u;
+    while (fin >> u.username >> u.password >> u.age >> u.gender
+               >> u.height >> u.weight >> u.biceps
+               >> u.targetWeight >> u.targetBiceps
+               >> u.activityLevel >> u.workoutLevel >> u.goal) {
+        if (u.username == uname && u.password == pwd) {
+            user = u;
+            fin.close();
+            return true;
+        }
+    }
+    fin.close();
+    return false;
+}
+
+// ---------------- REGISTRATION ----------------
+void registerUser() {
+    User u;
+    line();
+    cout << "USER REGISTRATION\n";
+    line();
+    cout << "Username: "; cin >> u.username;
+    cout << "Password: "; cin >> u.password;
+    cout << "Age: "; cin >> u.age;
+    cout << "Gender (M/F): "; cin >> u.gender;
+    cout << "Height (cm): "; cin >> u.height;
+    cout << "Current Weight (kg): "; cin >> u.weight;
+    cout << "Current Biceps (inch): "; cin >> u.biceps;
+    cout << "Target Weight (kg): "; cin >> u.targetWeight;
+    cout << "Target Biceps (inch): "; cin >> u.targetBiceps;
+    cout << "Activity Level (1-4): "; cin >> u.activityLevel;
+    cout << "Goal (lose/gain/maintain): "; cin >> u.goal;
+
+    u.workoutLevel = 1; // Beginner
+
+    saveUser(u);
+    cout << "\nRegistration Successful!\n";
+}
+
+// ---------------- WORKOUT LOGIC ----------------
+void updateWorkoutLevel(User &u) {
+    if (u.weight >= u.targetWeight &&
+        u.biceps >= u.targetBiceps &&
+        u.workoutLevel < 3) {
+
+        u.workoutLevel++;
+        cout << "\n*** CONGRATULATIONS! ***\n";
+        cout << "You have advanced to ";
+
+        if (u.workoutLevel == 2) cout << "INTERMEDIATE level!\n";
+        else if (u.workoutLevel == 3) cout << "ADVANCED level!\n";
+    }
+}
+
+void showWorkoutPlan(int level) {
+    line();
+    cout << "WORKOUT PLAN\n";
+    line();
+
+    if (level == 1) {
+        cout << "BEGINNER LEVEL\n";
+        cout << "- Walking / Jogging 20 mins\n";
+        cout <<"-Sit Up 20\n";
+        cout << "- Push-ups: 3 x 10\n";
+        cout << "- Dumbbell curls: 3 x 12\n";
+    }
+    else if (level == 2) {
+        cout << "INTERMEDIATE LEVEL\n";
+        cout << "- Running 30 mins\n";
+        cout << "- Bench press: 4 x 10\n";
+        cout << "- Barbell curls: 4 x 10\n";
+        cout <<"- Push up: 3x20\n";
+    }
+    else {
+        cout << "ADVANCED LEVEL\n";
+        cout << "- HIIT 20 mins\n";
+        cout << "- Heavy compound lifts\n";
+        cout << "- Supersets & drop sets\n";
+        cout << "Push up:3x20\n";
+    }
+}
+
+// ---------------- CALORIE COUNTER ----------------
+double calorieCounter() {
+    int n;
+    double total = 0;
+    cout << "Number of food items: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        string food;
+        double cal;
+        cout << "Food name: "; cin >> food;
+        cout << "Calories: "; cin >> cal;
+        total += cal;
+    }
+    cout << "Total Calories: " << total << " kcal\n";
+    return total;
+}
+
+// ---------------- MAIN ----------------
+int main() {
+    showDisclaimer();
+
+    User currentUser;
+    int choice;
+
+    while (true) {
+        line();
+        cout << "1. Login\n2. Register\n3. Exit\nChoice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            string u, p;
+            cout << "Username: "; cin >> u;
+            cout << "Password: "; cin >> p;
+            if (loadUser(currentUser, u, p)) break;
+            else cout << "Invalid Login!\n";
+        }
+        else if (choice == 2) registerUser();
+        else return 0;
+    }
+
+    int menu;
+    while (true) {
+        line();
+        cout << "MAIN MENU\n";
+        line();
+        cout << "1. View Workout Plan\n";
+        cout << "2. Log Progress\n";
+        cout << "3. Calorie Counter\n";
+        cout << "4. Logout\nChoice: ";
+        cin >> menu;
+
+        if (menu == 1) {
+            showWorkoutPlan(currentUser.workoutLevel);
+        }
+        else if (menu == 2) {
+            cout << "Enter new weight: ";
+            cin >> currentUser.weight;
+            cout << "Enter new biceps size: ";
+            cin >> currentUser.biceps;
+
+            updateWorkoutLevel(currentUser);
+        }
+        else if (menu == 3) calorieCounter();
+        else if (menu == 4) break;
+    }
+    return 0;
+}
