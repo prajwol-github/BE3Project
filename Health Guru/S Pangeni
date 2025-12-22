@@ -116,12 +116,16 @@ void showWorkoutPlan(int level) {
         cout << "- Running 30 mins\n";
         cout << "- Bench press: 4 x 10\n";
         cout << "- Barbell curls: 4 x 10\n";
+        cout << "- Push up: 3x15\n";
+        cout << "- sit up: 3x15\n"
     }
     else {
         cout << "ADVANCED LEVEL\n";
         cout << "- HIIT 20 mins\n";
         cout << "- Heavy compound lifts\n";
         cout << "- Supersets & drop sets\n";
+        cout << "- Push up:3x20\n";
+        cout << "- sit up: 3x20\n";
     }
 }
 
