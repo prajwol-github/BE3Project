@@ -1,5 +1,4 @@
-Apple
-Ball
-Cat
-Dog
-Egg
+Week1 : To learn GitHub basic Commands and to Write Introduction of the Projects
+Week2 : Project - Algorithm
+Week3 : Literature Review
+Week4 : Coding Part - Basic Game Introduction, Added Map and Timer Functionality
