@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -197,3 +198,31 @@ int main() {
     }
     return 0;
 }
+*/
+
+# Health Guru (C++ Console Application)
+
+## Project Description
+Health Guru is a C++ console-based fitness application that provides workout plans
+based on user fitness levels and includes a calorie counter feature.
+
+## Features
+- User Login
+- User Registration
+- Workout Plan (Beginner, Intermediate, Advanced)
+- Calorie Counter
+
+## File Structure
+- main.cpp – Program entry point
+- workout.cpp – Workout plan logic
+- calorie.cpp – Calorie counter logic
+
+## How to Run
+1. Open the project in VS Code
+2. Compile using a C++ compiler (g++)
+3. Run the executable in terminal
+
+## Contributors
+- Srijan Pangeni
+- Lenin Shrestha
+- Sumit Chand Thakuri
